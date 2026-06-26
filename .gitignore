@@ -1,0 +1,19 @@
+# Large raw data files
+FUT86_16.txt
+
+# Sensitive — API keys
+Doc/fred API key.txt
+gold_estimator_v2/Doc/fred API key.txt
+
+# Claude Code settings
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Office temp/lock files
+~$*
