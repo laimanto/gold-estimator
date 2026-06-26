@@ -4,6 +4,8 @@ FUT86_16.txt
 # Sensitive — API keys
 Doc/fred API key.txt
 gold_estimator_v2/Doc/fred API key.txt
+Doc/anthropic.txt
+gold_estimator_v2/Doc/anthropic.txt
 
 # Claude Code settings
 .claude/
