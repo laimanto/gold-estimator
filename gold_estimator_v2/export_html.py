@@ -687,6 +687,7 @@ method_html_rows = "\n".join(_method_html_parts)
 # ── Forecast Log ───────────────────────────────────────────────────────────
 LOG_CSV   = Path(__file__).parent / "data" / "forecast_log.csv"
 _LOG_COLS = ["Date", "WindowStart", "WindowEnd",
+             "GoldNow",
              "FcstLow", "FcstMedian", "FcstHigh",
              "ActLow", "ActClose", "ActHigh", "Diff"]
 
@@ -725,8 +726,9 @@ def _load_log():
         return []
     with open(LOG_CSV, newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
-    for r in rows:                 # back-compat: fill missing FcstMedian for older rows
+    for r in rows:                 # back-compat: fill missing columns for older rows
         r.setdefault("FcstMedian", "")
+        r.setdefault("GoldNow", "")
     return rows
 
 def _save_log(rows):
@@ -788,6 +790,7 @@ for _lr in _log_rows:
 
 # Today's entry — overwrite if already present, else append
 _new_row = {"Date": _today_str, "WindowStart": _win_start, "WindowEnd": _win_end,
+            "GoldNow": round(cur["Gold_Nominal"]),
             "FcstLow": _fcst_lo, "FcstMedian": _fcst_mid, "FcstHigh": _fcst_hi,
             "ActLow": "", "ActClose": "", "ActHigh": "", "Diff": ""}
 _existing_idx = next((i for i, r in enumerate(_log_rows)
@@ -845,6 +848,7 @@ def _log_row_html(r):
         f'<tr>'
         f'<td style="white-space:nowrap">{_fmtd(r["Date"])}</td>'
         f'<td style="text-align:center;font-size:11px;color:#888">{_fmtw(r["WindowStart"], r["WindowEnd"])}</td>'
+        f'{_c(r.get("GoldNow"),    "#b8bcc8")}'
         f'{_c(r.get("FcstLow"),    "#7abfff")}'
         f'{_c(r.get("FcstMedian"), "#c9a84c")}'
         f'{_c(r.get("FcstHigh"),   "#7abfff")}'
@@ -1020,15 +1024,17 @@ details[open] summary{{margin-bottom:12px}}
   <div style="overflow-x:auto">
     <table style="min-width:760px">
       <colgroup>
-        <col style="width:10%"><col style="width:18%">
-        <col style="width:8%"><col style="width:9%"><col style="width:8%">
-        <col style="width:8%"><col style="width:9%"><col style="width:8%">
+        <col style="width:10%"><col style="width:16%">
+        <col style="width:8%">
+        <col style="width:7%"><col style="width:8%"><col style="width:7%">
+        <col style="width:7%"><col style="width:8%"><col style="width:7%">
         <col style="width:7%">
       </colgroup>
       <thead>
         <tr>
           <th rowspan="2">Date Made</th>
           <th rowspan="2" style="text-align:center">Window (3m)</th>
+          <th rowspan="2" style="text-align:right;padding-right:10px">Gold Now</th>
           <th colspan="3" style="text-align:center;color:#7abfff">Forecast ±2 SD</th>
           <th colspan="3" style="text-align:center;color:#ff9f4a">Actual (window range)</th>
           <th rowspan="2" style="text-align:center">Diff</th>

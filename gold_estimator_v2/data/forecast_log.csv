@@ -1,2 +1,2 @@
-Date,WindowStart,WindowEnd,FcstLow,FcstMedian,FcstHigh,ActLow,ActClose,ActHigh,Diff
-2026-06-26,2026-06-27,2026-09-26,3710,4089,4507,,,,
+Date,WindowStart,WindowEnd,GoldNow,FcstLow,FcstMedian,FcstHigh,ActLow,ActClose,ActHigh,Diff
+2026-06-26,2026-06-27,2026-09-26,4030,3710,4089,4507,,,,
