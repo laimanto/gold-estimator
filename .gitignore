@@ -1,21 +1,10 @@
-# Large raw data files
-FUT86_16.txt
+# Ignore everything by default
+*
 
-# Sensitive — API keys
-Doc/fred API key.txt
-gold_estimator_v2/Doc/fred API key.txt
-Doc/anthropic.txt
-gold_estimator_v2/Doc/anthropic.txt
+# Keep git metadata
+!.gitignore
 
-# Claude Code settings
-.claude/
-
-# Python
-__pycache__/
-*.py[cod]
-
-# Jupyter
-.ipynb_checkpoints/
-
-# Office temp/lock files
-~$*
+# Keep only the published dashboard
+!gold_estimator_v2/
+!gold_estimator_v2/Doc/
+!gold_estimator_v2/Doc/dashboard.html
