@@ -4,7 +4,10 @@
 # Keep git metadata
 !.gitignore
 
-# Keep only the published dashboard
+# Keep only the published dashboards
 !gold_estimator_v2/
 !gold_estimator_v2/Doc/
 !gold_estimator_v2/Doc/dashboard.html
+!gold_estimator_v3/
+!gold_estimator_v3/Doc/
+!gold_estimator_v3/Doc/dashboard.html
