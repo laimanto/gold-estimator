@@ -5,6 +5,8 @@
 !.gitignore
 
 # Keep only the published dashboards
+# Stable path (always the current version): /dashboard.html
+!/dashboard.html
 !gold_estimator_v2/
 !gold_estimator_v2/Doc/
 !gold_estimator_v2/Doc/dashboard.html
