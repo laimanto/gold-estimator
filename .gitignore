@@ -7,6 +7,8 @@
 # Keep only the published dashboards
 # Stable path (always the current version): /dashboard.html
 !/dashboard.html
+# Root index (same content) so the bare Pages URL works: /index.html
+!/index.html
 !gold_estimator_v3/
 !gold_estimator_v3/Doc/
 !gold_estimator_v3/Doc/dashboard.html
