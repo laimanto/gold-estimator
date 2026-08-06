@@ -12,6 +12,9 @@
 !gold_estimator_v3/
 !gold_estimator_v3/Doc/
 !gold_estimator_v3/Doc/dashboard.html
+!gold_estimator_v4/
+!gold_estimator_v4/Doc/
+!gold_estimator_v4/Doc/dashboard.html
 
 # Keep the GitHub Actions Pages deploy workflow
 !.github/
