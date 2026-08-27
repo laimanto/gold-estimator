@@ -287,9 +287,11 @@ details[open] summary{margin-bottom:12px}
         Two FRED inputs land a full business day late, at different hours: <b>GVZ</b> posts
         ~09:35 ET on T+1 and <b>H.15</b> (TIPS / credit spread / fed funds) ~16:15 ET on T+1.
         The Friday W-FRI bar the 13-week model regresses on is therefore not complete until
-        <b style="color:#c9a84c">Monday ~16:30 ET</b> &mdash; which is why the pipeline runs
-        <b style="color:#c9a84c">Monday 18:00 ET</b>. A morning run sees complete data only through T-2
-        and silently forward-fills the rest. <i>Latest obs</i> below is what this build actually had.
+        <b style="color:#c9a84c">Monday ~16:30 ET</b>, when Friday's H.15 lands. Anything earlier sees
+        complete data only through T-2 and silently forward-fills the rest. The pipeline runs
+        <b style="color:#c9a84c">once per ISO week, triggered at logon</b>, and holds off until that
+        Friday has actually published rather than trusting a clock &mdash; so an early-morning boot
+        defers to the next one. <i>Latest obs</i> below is what this build actually had.
       </p>
       <div style="overflow-x:auto">
       <table style="margin-top:4px;min-width:720px">
@@ -318,6 +320,7 @@ details[open] summary{margin-bottom:12px}
         tier when new data has actually landed. Running before a publication therefore costs at most one
         week, never a month. WGC is the only manual step &mdash; the run pops a reminder once the expected
         release date passes and the newest local <code>GDT_Tables_*.xlsx</code> is still the prior quarter.
+        Nothing is scheduled to wake the machine; each boot is simply a retry opportunity.
       </p>
 
       <p style="margin:18px 0 2px;font-size:12px;color:#c9a84c;font-weight:600">
