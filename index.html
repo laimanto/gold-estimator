@@ -55,6 +55,11 @@ details[open] summary{margin-bottom:12px}
 .ci-bar .ci-now{background:var(--c-c9a84c)}
 .ci-bar .ci-fv{background:var(--c-ff9f4a);width:9px;height:9px;border-radius:50%;top:0}
 .ci-leg{color:var(--c-666);font-size:10px;white-space:nowrap}
+/* revised-at-your-inputs values: hidden until a forecast input is edited */
+.rev-part{display:none}
+body.inputs-edited .rev-part{display:inline}
+.rev-arrow{color:var(--c-c9a84c);font-size:24px;font-weight:700;margin:0 10px 0 12px;vertical-align:-2px}
+.rev-arrow-sm{color:var(--c-c9a84c);font-weight:700}
 </style>
 <script>
 // Theme: dark is the default; a light choice is remembered per browser (localStorage, best effort).
@@ -105,16 +110,16 @@ document.addEventListener("DOMContentLoaded", _themeLabel);
               <div></div>
               <div style="color:var(--c-888);font-size:10px;text-transform:uppercase;letter-spacing:.4px">Now &middot; 2026-11-13</div>
               <div style="color:var(--c-888);font-size:10px;text-transform:uppercase;letter-spacing:.4px">In 3 months
-                <span style="color:var(--c-555);text-transform:none;letter-spacing:0;margin-left:6px">model at analyst forecasts &rarr; revised at your inputs</span></div>
+                <span style="color:var(--c-555);text-transform:none;letter-spacing:0;margin-left:6px">at analyst forecasts<span class="rev-part"> <span class="rev-arrow-sm">&rarr;</span> <b style="color:var(--c-a0d8a0)">at your inputs</b></span></span></div>
 
               <div style="color:var(--c-888);font-size:11px;text-transform:uppercase;letter-spacing:.3px">Price</div>
               <div><span style="color:var(--c-c9a84c);font-size:20px;font-weight:700">$3,886</span>
                 <span style="color:var(--c-666);font-size:11px;margin-left:6px">GC=F</span></div>
               <div><span style="color:var(--c-7abfff);font-size:20px;font-weight:700" id="hdr-model-price">$&mdash;</span>
                 <span style="font-size:12px;margin-left:4px" id="hdr-model-chg">&mdash;</span>
-                <span style="color:var(--c-555);margin:0 8px">&rarr;</span>
+                <span class="rev-part"><span class="rev-arrow">&#10140;</span>
                 <span style="font-size:20px;font-weight:700;color:var(--c-a0d8a0)" id="hdr-price">$&mdash;</span>
-                <span style="font-size:12px;margin-left:4px" id="hdr-chg">&mdash;</span>
+                <span style="font-size:12px;margin-left:4px" id="hdr-chg">&mdash;</span></span>
                 <span class="ci-wrap"><span class="ci-lbl">95% CI</span>
                   <span class="ci-rng"><span id="hdr-rev-lo">&mdash;</span> &ndash; <span id="hdr-rev-hi">&mdash;</span></span>
                   <span class="ci-bar"><i class="ci-fc" id="ci-fc"></i><i class="ci-now" id="ci-now"></i><i class="ci-fv" id="ci-fv"></i></span>
@@ -127,15 +132,15 @@ document.addEventListener("DOMContentLoaded", _themeLabel);
                   <span class="ci-leg">out-of-sample tracking band</span></span></div>
               <div><span style="color:var(--c-c9a84c);font-size:20px;font-weight:700">$4,579</span>
                 <span style="font-size:12px;margin-left:4px;color:var(--c-888)"><span class="up">+10.5%</span></span>
-                <span style="color:var(--c-555);margin:0 8px">&rarr;</span>
-                <span style="font-size:20px;font-weight:700;color:var(--c-555)" id="hdr-fvl-fcst">$4,579</span>
-                <span style="font-size:12px;margin-left:4px;color:var(--c-888)" id="hdr-fvl-fcst-chg">revised = analyst</span></div>
+                <span class="rev-part"><span class="rev-arrow">&#10140;</span>
+                <span style="font-size:20px;font-weight:700;color:var(--c-a0d8a0)" id="hdr-fvl-fcst">$4,579</span>
+                <span style="font-size:12px;margin-left:4px;color:var(--c-888)" id="hdr-fvl-fcst-chg"></span></span></div>
 
               <div style="color:var(--c-888);font-size:11px;text-transform:uppercase;letter-spacing:.3px">Gap</div>
               <div><span style="font-size:14px;font-weight:700;color:var(--c-4caf82)">-6.2%</span>
                 <span style="color:var(--c-888);font-size:11px;margin-left:6px">price vs fair value</span></div>
               <div><span style="font-size:14px;font-weight:700" id="hdr-gap3m">&mdash;</span>
-                <span style="color:var(--c-888);font-size:11px;margin-left:6px">revised price vs revised fair value</span>
+                <span style="color:var(--c-888);font-size:11px;margin-left:6px" id="hdr-gap3m-lbl">price vs fair value, in 3 months</span>
                 <span style="color:var(--c-666);font-size:11px;margin-left:14px">if the gap closed on top of the move: <span style="color:var(--c-7abfff)" id="hdr-mr">$&mdash;</span> <span id="hdr-mr-chg"></span></span></div>
             </div>
             <div style="padding:0 16px 7px;font-size:11px;color:var(--c-666);border-top:1px solid var(--c-1f2235);margin-top:2px;padding-top:5px">
@@ -985,7 +990,12 @@ function updateLevelFV(g3m) {
   const dCls = dRel >= 0 ? "up" : "down";
   const pctTxt = c => { const p = (Math.exp(c) - 1) * 100; return (p >= 0 ? "+" : "") + p.toFixed(1) + "%"; };
   const g = id => document.getElementById(id);
-  if (g("hdr-fvl-fcst")) { g("hdr-fvl-fcst").textContent = "$" + fmt(fvR); g("hdr-fvl-fcst").style.color = changed ? "var(--c-a0d8a0)" : "var(--c-555)"; }
+  if (g("hdr-fvl-fcst")) g("hdr-fvl-fcst").textContent = "$" + fmt(fvR);
+  // any forecast input edited (vs the analyst value it loaded with)? -> reveal the "your inputs" values
+  const edited = [...document.querySelectorAll('input[id^="fi_"]')].some(i =>
+      i.defaultValue !== "" && Math.abs(parseFloat(i.value) - parseFloat(i.defaultValue)) > 1e-9);
+  document.body.classList.toggle("inputs-edited", edited);
+  if (g("hdr-gap3m-lbl")) g("hdr-gap3m-lbl").textContent = edited ? "price vs fair value, at your inputs" : "price vs fair value, in 3 months";
   if (g("hdr-fvl-fcst-chg")) g("hdr-fvl-fcst-chg").innerHTML = changed ? `<span class="${dCls}">${dTxt}</span> vs analyst` : "revised = analyst";
   for (const id of ["fvl-fcst-arrow", "fvl-fcst-total", "fvl-fcst-revlbl"]) if (g(id)) g(id).style.display = changed ? "inline" : "none";
   if (g("fvl-fcst-total")) g("fvl-fcst-total").textContent = "$" + fmt(fvR);
